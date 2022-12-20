@@ -1,0 +1,33 @@
+import React, { useState } from "react";
+import {
+  CssBaseline,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@mui/material";
+import { themeCreator } from "./base";
+// import { StylesProvider } from "@mui/styles";
+
+export const ThemeContext = React.createContext();
+
+const ThemeProviderWrapper = function (props) {
+  const curThemeName = localStorage.getItem("appTheme") || "NebulaFighterTheme";
+  const [themeName, _setThemeName] = useState(curThemeName);
+  const theme = themeCreator(themeName);
+  const setThemeName = (themeName) => {
+    localStorage.setItem("appTheme", themeName);
+    _setThemeName(themeName);
+  };
+  return (
+    <StyledEngineProvider injectFirst>
+      <ThemeContext.Provider value={setThemeName}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+
+          {props.children}
+        </ThemeProvider>
+      </ThemeContext.Provider>
+    </StyledEngineProvider>
+  );
+};
+
+export default ThemeProviderWrapper;
