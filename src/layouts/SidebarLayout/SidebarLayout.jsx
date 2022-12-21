@@ -50,7 +50,7 @@ const SidebarLayout = () => {
             }
           }}
         >
-          <Box display="block">
+          <Box display="block" >
             <Outlet />
           </Box>
         </Box>

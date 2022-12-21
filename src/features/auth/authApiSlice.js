@@ -3,24 +3,14 @@ import { apiSlice } from "../../app/api/apiSlice";
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: ({role,credentials}) => ({
+      query: ({ role, body }) => ({
         url: `/${role}/auth/login`,
         method: "POST",
-        body: { ...credentials },
+        body: { ...body },
       }),
-      invalidatesTags: ["Admin"],
-    }),
-    refresh: builder.mutation({
-      query: () => ({
-        url: "/admin/auth/refresh",
-        method: "POST",
-        body: {
-          refreshToken: localStorage.getItem("refresh"),
-        },
-      }),
-      invalidatesTags: ["Admin"],
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
-export const { useLoginMutation, useRefreshMutation } = authApiSlice;
+export const { useLoginMutation } = authApiSlice;

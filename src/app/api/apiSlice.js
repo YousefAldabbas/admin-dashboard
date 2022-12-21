@@ -28,14 +28,17 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+
+  console.log(args.body)
   if (result?.error?.status === 409 || result?.error?.status === 401) {
     const config = {
       headers: {
         authentication: `Bearer ${localStorage.getItem("refresh")}`,
       },
     };
+    let role = localStorage.getItem("role") || "user"
     const refreshResult = await axios.post(
-      "http://127.0.0.1:8000/v1/api/admin/auth/refresh",
+      `http://127.0.0.1:8000/v1/api/${role}/auth/refresh`,
       config
     );
     if (refreshResult?.data) {

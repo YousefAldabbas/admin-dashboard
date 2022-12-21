@@ -34,8 +34,12 @@ import {
   LogoutOutlined,
 } from "@mui/icons-material";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeSidebar } from "../../../../features/theme/themeSlice";
+import {
+  selectCurrentClinic,
+  selectCurrentUserRole,
+} from "../../../../features/auth/authSlice";
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -179,9 +183,49 @@ const SubMenuWrapper = styled(Box)(
 `
 );
 
+const roleList = {
+  MANAGER: [
+    {
+      icon: <BrightnessLowTwoTone />,
+      title: "Doctors",
+      route: "/manager/dashboard/doctors",
+    },
+    {
+      icon: <BrightnessLowTwoTone />,
+      title: "Clinic",
+      route: "/manager/dashboard/clinic",
+    },
+  ],
+  CLINIC: [
+    {
+      icon: <BrightnessLowTwoTone />,
+      title: "Patients",
+      route: "/clinic/dashboard/patients",
+    },
+    {
+      icon: <AccountCircleTwoTone />,
+      title: "History",
+      route: "/clinic/dashboard/history",
+    },
+  ],
+  ADMIN: [
+    {
+      icon: <BrightnessLowTwoTone />,
+      title: "Instructions",
+      route: "/admin/dashboard/instructions",
+    },
+    {
+      icon: <AccountCircleTwoTone />,
+      title: "Manager",
+      route: "/admin/dashboard/managers",
+    },
+  ],
+};
+
 function SidebarMenu() {
   const dispatch = useDispatch();
-
+  const role = useSelector(selectCurrentUserRole);
+  const clinic = useSelector(selectCurrentClinic);
   return (
     <>
       <MenuWrapper>
@@ -193,7 +237,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={() => dispatch(closeSidebar())}
-                  to="/dashboard"
+                  to={`/${role?.toLowerCase() || "clinic"}/dashboard`}
                   startIcon={<FilterVintageTwoTone />}
                 >
                   Dashboard
@@ -212,28 +256,37 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboard/instructions"
-                  startIcon={<BrightnessLowTwoTone />}
-                >
-                  Instructions
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboard/managers"
-                  startIcon={<AccountCircleTwoTone />}
-                >
-                  Manager
-                </Button>
-              </ListItem>
+              {roleList[role]?.map((x, i) => {
+                return (
+                  <ListItem component="div" key={`NVIT__${i}`}>
+                    <Button
+                      disableRipple
+                      component={RouterLink}
+                      onClick={closeSidebar}
+                      to={x.route}
+                      startIcon={x.icon}
+                    >
+                      {x.title}
+                    </Button>
+                  </ListItem>
+                );
+              })}
+              {clinic &&
+                roleList.CLINIC.map((x, i) => {
+                  return (
+                    <ListItem component="div" key={`N2IT__${i}`}>
+                      <Button
+                        disableRipple
+                        component={RouterLink}
+                        onClick={closeSidebar}
+                        to={x.route}
+                        startIcon={x.icon}
+                      >
+                        {x.title}
+                      </Button>
+                    </ListItem>
+                  );
+                })}
             </List>
           </SubMenuWrapper>
         </List>

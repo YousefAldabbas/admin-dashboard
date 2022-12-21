@@ -1,15 +1,32 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentToken } from "./authSlice";
+import {
+  selectCurrentClinic,
+  selectCurrentToken,
+  selectCurrentUserRole,
+} from "./authSlice";
 
-function RequireAuth() {
+function RequireAuth({ allowedRole }) {
   const token = useSelector(selectCurrentToken);
-  console.log(token)
+  const role = useSelector(selectCurrentUserRole);
+  const clinic = useSelector(selectCurrentClinic);
+  console.log(clinic);
+
   const location = useLocation();
+
+  if (clinic) {
+    return <Outlet />;
+  }
   return token ? (
-    <Outlet />
+    <>
+      {allowedRole === role ? (
+        <Outlet />
+      ) : (
+        <Navigate to="/unauthenticated" state={{ from: location }} replace />
+      )}
+    </>
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/user/login" state={{ from: location }} replace />
   );
 }
 

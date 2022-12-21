@@ -19,6 +19,7 @@ import {
   selectSidebar,
   toggleSidebar,
 } from "../../../features/theme/themeSlice";
+import { logOut } from "../../../features/auth/authSlice";
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -88,9 +89,9 @@ function Sidebar() {
         />
         <Box p={2}>
           <Button
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={()=>{
+              dispatch(logOut())
+            }}
             variant="contained"
             color="success"
             size="small"
@@ -119,16 +120,18 @@ function Sidebar() {
           }}
         >
           <Scrollbar>
-            <Box mt={3}>
-              <Box
-                mx={2}
-                sx={{
-                  width: 52,
-                }}
-              >
-                <Logo />
-              </Box>
+          <Box
+              mx={2}
+              sx={{
+                height: "27px",
+                textAlign: "center",
+                fontSize:"1.5rem",
+                p:1
+              }}
+            >
+              Your Health
             </Box>
+
             <Divider
               sx={{
                 mt: theme.spacing(3),

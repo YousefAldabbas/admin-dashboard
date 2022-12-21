@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { Typography, Button, Grid } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 
 const PageTitle = ({
+  childern,
   heading = "",
   subHeading = "",
   docs = "",
@@ -24,7 +24,7 @@ const PageTitle = ({
         sx={{
           justifyContent: {
             xs: "center",
-            sm:"space-between",
+            sm: "space-between",
             md: "space-between",
           },
           flexDirection: {
@@ -52,15 +52,10 @@ const PageTitle = ({
             </Button>
           </Grid>
         )}
+        <Grid item>{childern}</Grid>
       </Grid>
     </>
   );
-};
-
-PageTitle.propTypes = {
-  heading: PropTypes.string,
-  subHeading: PropTypes.string,
-  docs: PropTypes.string,
 };
 
 export default PageTitle;
